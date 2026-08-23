@@ -18,12 +18,10 @@ export function buildPoolPrompt(
 
   const poolModel = clientConfig.pool_models.find((m) => m.id === model);
   const modelName = poolModel?.name || model;
-  const isRoma = model.toUpperCase() === "ROMA" || modelName.toUpperCase() === "ROMA";
-
   const shapeDesc =
     poolModel?.prompt_description ||
     poolModel?.description ||
-    `${model} shaped fiberglass swimming pool`;
+    `${model} shaped fiberglass pool`;
 
   const deckColor = deck
     ? clientConfig.deck_colors.find((d) => d.id === deck)
@@ -33,285 +31,241 @@ export function buildPoolPrompt(
     ? clientConfig.ceramic_colors.find((c) => c.id === ceramic)
     : null;
 
-  // ---- POOL SHAPE section (isRoma'ya göre ayrılmış — önceden HER modele
-  // aynı sabit "stadium/pill" metni gidiyordu, bu yanlıştı ve Relax'e bile
-  // uygulanıyordu). ----
-  const shapeSection = isRoma
-    ? `The pool MUST match Image 2 exactly.
+  const isRoma = model.toUpperCase() === "ROMA";
 
-For the ROMA model:
+  // ROMA modelinin şekli diğer model açıklamalarından bağımsız olarak
+  // referans görseldeki özel organik formu takip eder.
+  const effectiveShapeDesc = isRoma
+    ? `
+ROMA is an asymmetric organic freeform fiberglass pool.
+MATCH THE EXACT OUTER SILHOUETTE OF IMAGE 2.
+The pool has a large wide smoothly rounded end and a narrower rounded opposite end.
+Its long sides are continuously curved and asymmetric, creating a flowing natural shape.
+The outline must match the distinctive ROMA model shown in Image 2.
 
-- The outline is an elongated, gently curved shape — NOT a symmetric stadium, NOT a symmetric pill, NOT a perfect oval.
-- The two ends are NOT identical to each other:
-  - The end WITHOUT steps is a plain, smooth, fully rounded curve.
-  - The end WITH the molded entry steps has a subtle stepped-out shoulder where the staircase block meets the pool walls — the silhouette flares slightly wider right at the top of the steps before curving into the rounded cap. This end is NOT a plain semicircle.
-- The two long sides bow gently outward (slightly convex), not perfectly straight, not perfectly parallel.
-- One continuous seamless fiberglass shell, no sharp corners, no rectangular corners, no kidney shape, no random extra bulges or protrusions beyond what is described above.
-
-Do not redesign or reinterpret the pool shape. Do not default to a generic symmetric stadium/pill assumption — copy Image 2's actual silhouette, including its asymmetry between the two ends.
-
-The reference image is more important than generic pool-shape assumptions.`
-    : `The pool MUST match Image 2 exactly.
-
-Copy Image 2's silhouette faithfully as shown — its proportions, corner style, and overall outline.
-
-Do not turn it into a stadium shape, pill shape, oval, or any curved silhouette unless Image 2 itself shows curves. Do not redesign or reinterpret the pool shape.
-
-The reference image is more important than generic pool-shape assumptions.`;
-
-  // ---- ENTRY STEPS section (model bazlı konum: Roma = uçta, diğerleri =
-  // köşede — önceden model ayrımı yapılmıyordu, sadece "one short end"
-  // deniyordu). ----
-  const stepsSection = config.hasStairs
-    ? isRoma
-      ? `
-Add wide BUILT-IN FIBERGLASS ENTRY STEPS.
-
-- Located at the rounded, shouldered end of the pool described in the POOL SHAPE section above (the end with the stepped-out silhouette).
-- 2-3 visible descending levels, spanning most of that end's width.
-- Integrated directly into the fiberglass shell, same color as the shell.
-- Clearly visible underwater, with soft light and shadow defining each step edge.
-- Match the reference model exactly.
-
-IMPORTANT:
-Do NOT add a stainless-steel ladder.
-Do NOT add an external staircase.
+Image 2 is the ABSOLUTE SOURCE OF TRUTH for the ROMA pool shape.
+Do not redesign, simplify, stretch, or reinterpret the ROMA silhouette.
+ABSOLUTELY NOT rectangular.
+ABSOLUTELY NOT square.
+ABSOLUTELY NOT a generic symmetrical oval.
+NO straight sides and NO 90-degree corners.
 `
-      : `
-Add BUILT-IN FIBERGLASS ENTRY STEPS.
+    : shapeDesc;
 
-- Located in ONE CORNER of the pool, in the same corner as shown in the reference image — not centered on a short end, not spanning the full width.
-- 2-3 visible descending levels, compact and corner-fitted.
-- Integrated directly into the fiberglass shell, same color as the shell.
-- Clearly visible underwater, with soft light and shadow defining each step edge.
-- Match the reference model exactly.
-
-IMPORTANT:
-Do NOT add a stainless-steel ladder.
-Do NOT add an external staircase.
+  const shapeRule = isRoma
+    ? `
+EXACT ROMA FREEFORM SHAPE REQUIRED.
+Copy the outer silhouette and proportions of Image 2 as accurately as possible.
+Asymmetric flowing curved sides, wide rounded end, narrower rounded opposite end.
 `
     : `
-Do not add additional pool stairs or a pool ladder.
+Strictly rectangular — straight sides and 90-degree corners.
+ABSOLUTELY NOT oval or curved.
 `;
 
   return `
 You are a professional architectural visualization AI.
+Your task is to place a luxury fiberglass swimming pool into the provided outdoor photo.
 
-Edit the provided garden photo by realistically installing the specified fiberglass swimming pool.
+The result must look exactly like a real photograph taken after the pool was professionally built and installed.
 
-The final result must look like a real photograph of the same property after a professional pool installation.
+REFERENCE IMAGES:
+- Image 1: Customer garden/property photo — THIS IS THE IMAGE TO EDIT
+- Image 2: ${modelName} pool model — USE THIS EXACT POOL SHAPE
+${config.hasWaterfall ? "- Image 3: Waterfall style reference — ADD THIS WATERFALL TO POOL EDGE" : ""}
 
-REFERENCE:
-- Image 1 = original customer garden photo. Preserve this environment.
-- Image 2 = exact ${modelName} pool model. This is the PRIMARY reference for the pool shape.
+---
 
-POOL MODEL:
-${shapeDesc}
+MOST IMPORTANT RULE — IN-GROUND INSTALLATION
 
-==================================================
-POOL SHAPE — HIGHEST PRIORITY
-==================================================
+This is a PROFESSIONAL IN-GROUND swimming pool built INTO the ground.
 
-${shapeSection}
+The water surface must be at the SAME LEVEL as the surrounding ground.
+The pool goes down into the earth.
+Only a thin flush edge may be visible at ground level.
+The pool must look permanent and professionally installed.
 
-SIZE:
-${size} meters
+NEVER show:
+- Pool sitting above ground
+- Visible exterior pool walls
+- Raised pool sides
+- Gaps between pool and surrounding surface
 
-Maintain the correct proportions of the reference model.
+Pool above ground = INVALID OUTPUT.
 
-==================================================
-INSTALLATION
-==================================================
+---
 
-The pool is a professional IN-GROUND fiberglass pool.
+RULE 1 — PRESERVE THE ORIGINAL SCENE
 
-The pool must be installed INTO the ground, not placed on top of it.
+Keep all existing buildings, houses, trees, plants, fences, walls and landscaping unchanged.
+Only add the pool to the available open ground area.
+Do not alter the architecture.
+Do not remove existing objects unnecessarily.
+Do not block the main building.
 
-The water surface must naturally align with the surrounding finished ground level.
+---
 
-Only the selected pool edge/surround may be visible.
+RULE 2 — POOL SHAPE: ${modelName.toUpperCase()}
 
-Never show:
-- an above-ground pool
-- exposed fiberglass walls
-- a floating pool
-- a pool sitting like a container
-- large gaps between the pool and ground
+${effectiveShapeDesc}
 
-The pool must look permanently installed and physically believable.
+Shape rule:
+${shapeRule}
 
-==================================================
-ORIGINAL PROPERTY
-==================================================
+Size: ${size} meters — maintain realistic proportions.
 
-Preserve the original photograph.
+The pool must be reasonably sized for the visible garden.
+It must be smaller than the house/building.
+Do not fill the entire garden with the pool.
 
-Do NOT change:
-- house
-- buildings
-- windows
-- doors
-- fences
-- walls
-- trees
-- plants
-- hedges
-- existing landscaping
-- camera angle
-- perspective
+---
 
-Only modify the necessary ground area where the pool is installed.
+RULE 3 — POOL WATER
 
-Place the pool naturally in the most suitable open garden area.
+Clear bright blue water.
+Realistic depth, natural reflections, light shimmer and subtle color variation.
+The pool interior must visibly go down into the ground.
 
-Keep the pool proportional to the house and garden.
-
-==================================================
-WATER
-==================================================
-
-Use realistic clean blue pool water.
-
-The water must have:
-- realistic depth
-- natural reflections
-- subtle sunlight
-- realistic underwater light patterns
-- natural color variation
-
-Do not make the water look flat or artificial.
-
-==================================================
-POOL SURROUND
-==================================================
+---
 
 ${
   ceramicColor
     ? `
-CERAMIC SURROUND (MANDATORY):
+RULE 4 — CERAMIC TILE SURROUND (MANDATORY)
 
-Add a ceramic tile surround around the pool.
+Add a ceramic tile walkway following the ENTIRE OUTER SHAPE of the pool.
 
-- Total width: 120 cm.
-- Exactly 2 rows.
-- Tile size: 33 x 66 cm.
-- Rectangular 2:1 proportions.
-- Long side parallel to the pool edge.
-- Visible realistic grout lines.
-- Tile color: ${ceramicColor.name}.
-- Tiles flush with ground level.
-- Professional outdoor installation.
+IMPORTANT:
+- The ceramic surround must FOLLOW THE EXACT CURVED OUTLINE of the pool.
+- For ROMA, tiles must follow the asymmetric freeform curved pool shape.
+- Do not force the ROMA pool into a rectangular tile border.
 
-Do NOT use square tiles.
-Do NOT add a wood deck.
-Do NOT add any white border, coping, or rim around the pool.
-Do NOT skip the ceramic tiles — they are MANDATORY when selected.
+Exactly 2 rows of ceramic tiles around the pool.
+Total surround width: 120cm.
+Each row: 60cm wide.
+
+Tile size:
+- Rectangular 33cm x 66cm
+- 2:1 ratio
+- NEVER square tiles
+- Long side parallel to the nearest pool edge
+- For curved ROMA edges, orient tiles naturally along the curve
+- Visible 2-3mm grout lines
+
+Tile color: ${ceramicColor.name} colored ceramic tiles.
+
+Tiles sit completely flush at ground level.
+Clean, professional, realistic finish.
+The ceramic surround replaces the original grass directly around the pool.
+
+DO NOT add any extra white border, coping, or raised rim.
+Ceramic tiles are MANDATORY.
 `
     : deckColor
-    ? `
-COMPOSITE WOOD DECK (MANDATORY):
+      ? `
+RULE 4 — DECK SURROUND (MANDATORY)
 
-Add a composite wood deck around the pool.
+Add a composite wood deck around the ENTIRE pool.
 
-- Total width: approximately 60 cm.
-- Exactly 3 boards.
-- Each board approximately 20 cm wide.
-- Boards parallel to the nearest pool edge.
-- Deck color: ${deckColor.name}.
-- Flush with ground level.
-- Realistic material texture and gaps.
+IMPORTANT:
+- The deck must FOLLOW THE EXACT OUTER SHAPE of the pool.
+- For ROMA, the deck edge must follow the asymmetric curved pool outline.
+- Do not place a rectangular deck around a curved ROMA pool.
 
-Do NOT add ceramic tiles.
-Do NOT add any white border, coping, or rim around the pool.
-Do NOT skip the deck — it is MANDATORY when selected.
+Exactly 3 deck boards around the pool.
+Total width: 60cm.
+Each board: 20cm wide.
+
+Deck boards follow the nearest pool edge.
+For curved ROMA edges, boards must naturally follow the pool's curved outline.
+
+Deck color: ${deckColor.name} colored composite wood deck.
+
+The deck sits flush at ground level.
+Clean modern finish with tight gaps.
+The deck replaces the grass directly around the pool.
+
+DO NOT add any extra white border, coping, or raised rim.
+Deck is MANDATORY.
 `
-    : `
-NO SURROUND MATERIAL:
+      : `
+RULE 4 — POOL SURROUND
 
-Do not add ceramic tiles, wood deck, paving stones or decorative borders.
+The original ground meets the pool edge directly.
 
-The existing ground should naturally meet the pool edge.
-Do NOT add any white border, coping, or rim around the pool.
+Do not add:
+- Deck
+- Ceramic tiles
+- Stone
+- Pavers
+- Extra border
+- White coping
+- Raised rim
+
+The pool shell must remain completely below ground.
+Only the water surface and a thin flush edge are visible.
 `
 }
 
-==================================================
-ENTRY STEPS
-==================================================
+---
 
-${stepsSection}
+${
+  config.hasStairs
+    ? `
+RULE 5 — POOL LADDER (MANDATORY)
 
-==================================================
-WATERFALL
-==================================================
+A 3-step stainless steel pool entry ladder MUST be visible.
+Polished chrome stainless steel.
+Mounted on one short end of the pool.
+Steps go down into the water.
+
+OMITTING THE LADDER = INVALID OUTPUT.
+`
+    : ""
+}
 
 ${
   config.hasWaterfall
     ? `
-Add one small stainless-steel waterfall blade.
+RULE 6 — WATERFALL BLADE (MANDATORY)
 
-- Approximately 35 cm wide.
-- Approximately 40 cm tall.
-- Brushed/polished stainless steel.
-- Mounted directly on one long pool edge.
-- Smooth sheet of water flowing into the pool.
-- Realistic connection, reflections and shadows.
+A small elegant stainless steel cobra waterfall blade MUST be visible.
 
-Do not create a large decorative waterfall structure.
+Approximately 35cm wide and 40cm tall.
+Polished brushed stainless steel.
+Mounted directly on the pool edge.
+Water flows in a smooth sheet into the pool.
+
+OMITTING THE WATERFALL = INVALID OUTPUT.
 `
-    : `
-Do not add a waterfall or other water feature.
-`
+    : ""
 }
 
-==================================================
-PHOTOREALISM
-==================================================
+---
 
-The final result must look like a real professional photograph.
+RULE 7 — PHOTOREALISTIC QUALITY
 
-Match the original image's:
-- camera angle
-- perspective
-- lighting
-- shadows
-- weather
-- time of day
-- image quality
+Match the original camera angle and perspective exactly.
+Match the original lighting, shadows and time of day.
+The result must look like a real professional photograph.
+Luxury villa quality.
+Clean, realistic, premium finish.
 
-The pool must have realistic:
-- shadows
-- reflections
-- depth
-- material texture
-- contact with the ground
+---
 
-The pool must look physically present in the original garden.
+ABSOLUTE PROHIBITIONS:
 
-Do NOT make it look like:
-- CGI
-- 3D render
-- illustration
-- cartoon
-- game graphics
-
-==================================================
-ABSOLUTE RULES
-==================================================
-
-1. Preserve the original property.
-2. Match Image 2 pool shape exactly, including asymmetry where present.
-3. Do not force a symmetric stadium/pill silhouette unless Image 2 actually shows one.
-4. Install the pool underground.
-5. Do not expose fiberglass walls.
-6. Apply the selected deck or ceramic surround.
-7. Use integrated fiberglass steps in the correct position (end for Roma, corner for other models) when selected.
-8. Do not add a metal ladder.
-9. Add the waterfall only when selected.
-10. Do not change the camera perspective.
-11. Produce a photorealistic photograph.
-12. Never add a white border, coping, or rim around the pool.
-
-The pool shape and reference image have the highest priority.
+❌ Pool above ground
+❌ Visible exterior pool walls
+❌ Raised pool sides
+❌ Changing existing buildings or landscaping
+❌ Wrong pool shape
+❌ For ROMA: rectangular, square, generic oval, or symmetrical pool shape
+❌ For ROMA: ignoring the exact Image 2 silhouette
+❌ Cartoon, CGI, 3D render, illustration style
+${ceramicColor ? "❌ Missing ceramic tile surround" : ""}
+${deckColor ? "❌ Missing deck surround" : ""}
+${config.hasStairs ? "❌ Missing pool ladder" : ""}
+${config.hasWaterfall ? "❌ Missing waterfall" : ""}
 `.trim();
 }
