@@ -18,6 +18,7 @@ export function buildPoolPrompt(
 
   const poolModel = clientConfig.pool_models.find((m) => m.id === model);
   const modelName = poolModel?.name || model;
+  const isRoma = model.toUpperCase() === "ROMA" || modelName.toUpperCase() === "ROMA";
 
   const shapeDesc =
     poolModel?.prompt_description ||
@@ -31,6 +32,67 @@ export function buildPoolPrompt(
   const ceramicColor = ceramic
     ? clientConfig.ceramic_colors.find((c) => c.id === ceramic)
     : null;
+
+  // ---- POOL SHAPE section (isRoma'ya göre ayrılmış — önceden HER modele
+  // aynı sabit "stadium/pill" metni gidiyordu, bu yanlıştı ve Relax'e bile
+  // uygulanıyordu). ----
+  const shapeSection = isRoma
+    ? `The pool MUST match Image 2 exactly.
+
+For the ROMA model:
+
+- The outline is an elongated, gently curved shape — NOT a symmetric stadium, NOT a symmetric pill, NOT a perfect oval.
+- The two ends are NOT identical to each other:
+  - The end WITHOUT steps is a plain, smooth, fully rounded curve.
+  - The end WITH the molded entry steps has a subtle stepped-out shoulder where the staircase block meets the pool walls — the silhouette flares slightly wider right at the top of the steps before curving into the rounded cap. This end is NOT a plain semicircle.
+- The two long sides bow gently outward (slightly convex), not perfectly straight, not perfectly parallel.
+- One continuous seamless fiberglass shell, no sharp corners, no rectangular corners, no kidney shape, no random extra bulges or protrusions beyond what is described above.
+
+Do not redesign or reinterpret the pool shape. Do not default to a generic symmetric stadium/pill assumption — copy Image 2's actual silhouette, including its asymmetry between the two ends.
+
+The reference image is more important than generic pool-shape assumptions.`
+    : `The pool MUST match Image 2 exactly.
+
+Copy Image 2's silhouette faithfully as shown — its proportions, corner style, and overall outline.
+
+Do not turn it into a stadium shape, pill shape, oval, or any curved silhouette unless Image 2 itself shows curves. Do not redesign or reinterpret the pool shape.
+
+The reference image is more important than generic pool-shape assumptions.`;
+
+  // ---- ENTRY STEPS section (model bazlı konum: Roma = uçta, diğerleri =
+  // köşede — önceden model ayrımı yapılmıyordu, sadece "one short end"
+  // deniyordu). ----
+  const stepsSection = config.hasStairs
+    ? isRoma
+      ? `
+Add wide BUILT-IN FIBERGLASS ENTRY STEPS.
+
+- Located at the rounded, shouldered end of the pool described in the POOL SHAPE section above (the end with the stepped-out silhouette).
+- 2-3 visible descending levels, spanning most of that end's width.
+- Integrated directly into the fiberglass shell, same color as the shell.
+- Clearly visible underwater, with soft light and shadow defining each step edge.
+- Match the reference model exactly.
+
+IMPORTANT:
+Do NOT add a stainless-steel ladder.
+Do NOT add an external staircase.
+`
+      : `
+Add BUILT-IN FIBERGLASS ENTRY STEPS.
+
+- Located in ONE CORNER of the pool, in the same corner as shown in the reference image — not centered on a short end, not spanning the full width.
+- 2-3 visible descending levels, compact and corner-fitted.
+- Integrated directly into the fiberglass shell, same color as the shell.
+- Clearly visible underwater, with soft light and shadow defining each step edge.
+- Match the reference model exactly.
+
+IMPORTANT:
+Do NOT add a stainless-steel ladder.
+Do NOT add an external staircase.
+`
+    : `
+Do not add additional pool stairs or a pool ladder.
+`;
 
   return `
 You are a professional architectural visualization AI.
@@ -50,29 +112,7 @@ ${shapeDesc}
 POOL SHAPE — HIGHEST PRIORITY
 ==================================================
 
-The pool MUST match Image 2 exactly.
-
-For this stadium-shaped model:
-
-- Two long straight parallel sides.
-- Two short rounded ends.
-- BOTH short ends must be rounded — this is a SYMMETRIC shape, a mirror image of itself end to end.
-- Do NOT make one end rounded and the other end straight, square, or rectangular. If one end is a semicircle, the OTHER end must ALSO be an identical semicircle of the same radius.
-- Smooth continuous transition from the straight sides into the rounded ends.
-- Symmetrical stadium / pill-shaped silhouette — the same shape whether viewed from either short end.
-- One continuous seamless fiberglass shell.
-- No sharp corners.
-- No rectangular corners.
-- No kidney shape.
-- No random curves.
-- No bulges.
-- No extra protrusions.
-- No asymmetrical extensions.
-- Entry steps (if present) are a separate feature INSIDE the pool — they do NOT change the outer shell's outline. The outer edge stays a perfect symmetric stadium shape even at the end where steps are located.
-
-Do not redesign or reinterpret the pool shape.
-
-The reference image is more important than generic pool-shape assumptions.
+${shapeSection}
 
 SIZE:
 ${size} meters
@@ -199,27 +239,7 @@ Do NOT add any white border, coping, or rim around the pool.
 ENTRY STEPS
 ==================================================
 
-${
-  config.hasStairs
-    ? `
-Add wide BUILT-IN FIBERGLASS ENTRY STEPS.
-
-- Located on one short end of the pool.
-- 2-3 visible descending levels.
-- Wide and proportional to the pool.
-- Integrated directly into the fiberglass shell.
-- Clearly visible underwater.
-- Match the reference model.
-- IMPORTANT: the steps sit INSIDE the pool's water area — the outer shell outline at that end remains a rounded semicircle, identical to the other end. The steps do NOT flatten, square off, or otherwise change the outer edge shape.
-
-IMPORTANT:
-Do NOT add a stainless-steel ladder.
-Do NOT add an external staircase.
-`
-    : `
-Do not add additional pool stairs or a pool ladder.
-`
-}
+${stepsSection}
 
 ==================================================
 WATERFALL
@@ -280,18 +300,17 @@ ABSOLUTE RULES
 ==================================================
 
 1. Preserve the original property.
-2. Match Image 2 pool shape.
-3. Keep the stadium/pill silhouette — BOTH ends rounded, symmetric.
-4. Keep the pool symmetrical — never one rounded end and one square end.
-5. Install the pool underground.
-6. Do not expose fiberglass walls.
-7. Apply the selected deck or ceramic surround.
-8. Use integrated fiberglass steps when selected, without altering the outer shell shape.
-9. Do not add a metal ladder.
-10. Add the waterfall only when selected.
-11. Do not change the camera perspective.
-12. Produce a photorealistic photograph.
-13. Never add a white border, coping, or rim around the pool.
+2. Match Image 2 pool shape exactly, including asymmetry where present.
+3. Do not force a symmetric stadium/pill silhouette unless Image 2 actually shows one.
+4. Install the pool underground.
+5. Do not expose fiberglass walls.
+6. Apply the selected deck or ceramic surround.
+7. Use integrated fiberglass steps in the correct position (end for Roma, corner for other models) when selected.
+8. Do not add a metal ladder.
+9. Add the waterfall only when selected.
+10. Do not change the camera perspective.
+11. Produce a photorealistic photograph.
+12. Never add a white border, coping, or rim around the pool.
 
 The pool shape and reference image have the highest priority.
 `.trim();
