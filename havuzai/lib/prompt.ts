@@ -16,22 +16,13 @@ export function buildPoolPrompt(
 ): string {
   const { model, size, ceramic, deck } = config;
 
-  // ============================================================
-  // MODEL
-  // ============================================================
-
   const poolModel = clientConfig.pool_models.find((m) => m.id === model);
-
   const modelName = poolModel?.name || model;
 
   const shapeDesc =
     poolModel?.prompt_description ||
     poolModel?.description ||
     `${model} shaped fiberglass swimming pool`;
-
-  // ============================================================
-  // COLORS
-  // ============================================================
 
   const deckColor = deck
     ? clientConfig.deck_colors.find((d) => d.id === deck)
@@ -41,542 +32,263 @@ export function buildPoolPrompt(
     ? clientConfig.ceramic_colors.find((c) => c.id === ceramic)
     : null;
 
-  // ============================================================
-  // COLOR DETAILS
-  // ============================================================
-
-  const ceramicColorText = ceramicColor
-    ? `${ceramicColor.name}${
-        ceramicColor.hex ? ` (exact color HEX: ${ceramicColor.hex})` : ""
-      }`
-    : "";
-
-  const deckColorText = deckColor
-    ? `${deckColor.name}${
-        deckColor.hex ? ` (exact color HEX: ${deckColor.hex})` : ""
-      }`
-    : "";
-
-  // ============================================================
-  // PROMPT
-  // ============================================================
-
   return `
 You are a professional architectural visualization AI.
 
-Your task is to realistically install the selected fiberglass swimming pool into the customer's original garden photograph.
+Edit the provided garden photo by realistically installing the specified fiberglass swimming pool.
 
-The final image must look like a REAL PHOTOGRAPH taken after the pool was professionally installed.
+The final result must look like a real photograph of the same property after a professional pool installation.
 
-============================================================
-REFERENCE IMAGES
-============================================================
+REFERENCE:
+- Image 1 = original customer garden photo. Preserve this environment.
+- Image 2 = exact ${modelName} pool model. This is the PRIMARY reference for the pool shape.
 
-IMAGE 1:
-Original customer garden/property photograph.
-
-IMAGE 2:
-Exact ${modelName} fiberglass pool model reference.
-
-IMAGE 2 is the PRIMARY AUTHORITY for the pool model.
-
-The pool must preserve the exact geometry, silhouette, proportions, curves, corners, steps and overall design shown in Image 2.
-
-The pool model must NOT be redesigned because of the garden, ceramic, deck, waterfall or other options.
-
-============================================================
-MODEL IDENTITY — CRITICAL
-============================================================
-
-SELECTED MODEL:
-${modelName}
-
-MODEL DESCRIPTION:
+POOL MODEL:
 ${shapeDesc}
 
-IMPORTANT:
-
-Use ONLY the geometry of the selected ${modelName} model.
-
-Do NOT replace this model with a generic swimming pool shape.
-
-Do NOT assume every model is rectangular, oval, stadium-shaped, kidney-shaped or pill-shaped.
-
-Different pool models have different geometries.
-
-The selected model's own reference image and model description always determine its shape.
-
-The presence of ceramic, deck, stairs or waterfall MUST NEVER change the basic pool geometry.
-
-The pool must remain recognizable as the exact ${modelName} model after all selected options are added.
-
-============================================================
+==================================================
 POOL SHAPE — HIGHEST PRIORITY
-============================================================
+==================================================
 
-Preserve the exact silhouette of Image 2.
+The pool MUST match Image 2 exactly.
 
-Do NOT:
-- straighten curved sections
-- remove rounded sections
-- create new curves
-- remove model-specific curves
-- add random curves
-- turn the pool into a generic oval
-- turn the pool into a generic rectangle
-- turn the pool into a stadium shape unless the selected model itself is stadium-shaped
-- make the pool symmetrical if the reference model is intentionally asymmetrical
-- make the pool asymmetrical if the reference model is symmetrical
-- add random protrusions
-- remove model-specific protrusions
-- change the width-to-length ratio
-- change the location or shape of built-in steps
-- change the shape of the pool because ceramic or deck is selected
+For this stadium-shaped model:
 
-The selected pool model must remain visually identical in design to Image 2.
+- Two long straight parallel sides.
+- Two short rounded ends.
+- Smooth continuous transition from the straight sides into the rounded ends.
+- Symmetrical stadium / pill-shaped silhouette.
+- One continuous seamless fiberglass shell.
+- No sharp corners.
+- No rectangular corners.
+- No kidney shape.
+- No random curves.
+- No bulges.
+- No extra protrusions.
+- No asymmetrical extensions.
 
-============================================================
-POOL SIZE
-============================================================
+Do not redesign or reinterpret the pool shape.
 
-Specified pool size:
+The reference image is more important than generic pool-shape assumptions.
 
+SIZE:
 ${size} meters
 
-Maintain the correct proportions of the selected model.
+Maintain the correct proportions of the reference model.
 
-Scale the pool realistically according to the specified size.
+==================================================
+INSTALLATION
+==================================================
 
-Do not stretch or compress the pool unnaturally.
+The pool is a professional IN-GROUND fiberglass pool.
 
-============================================================
-POOL PLACEMENT
-============================================================
+The pool must be installed INTO the ground, not placed on top of it.
 
-Place the pool in the MOST SUITABLE OPEN AREA of the original garden.
+The water surface must naturally align with the surrounding finished ground level.
 
-Choose the location based on:
-- available open ground
-- realistic pool dimensions
-- house position
-- existing landscaping
-- trees and plants
-- walls and fences
-- camera perspective
-- natural walking space
+Only the selected pool edge/surround may be visible.
 
-The pool should look like it was intentionally planned for this garden.
-
-Do NOT simply place the pool in the center of the image.
-
-Do NOT place the pool where it blocks the house.
-
-Do NOT place the pool over buildings, trees, walls or existing structures.
-
-Do NOT destroy important landscaping just to fit the pool.
-
-The pool may replace only the necessary open grass/ground area.
-
-Maintain realistic clearance from:
-- house
-- walls
-- fences
-- trees
-- major plants
-- existing structures
-
-The pool must fit naturally into the garden at the specified size.
-
-============================================================
-IN-GROUND INSTALLATION
-============================================================
-
-This is a PROFESSIONAL IN-GROUND FIBERGLASS POOL.
-
-The pool must be physically installed INTO the ground.
-
-The water surface should naturally align with the surrounding finished ground level.
-
-The pool must NOT appear above ground.
-
-Do NOT show:
-- exposed fiberglass pool walls
-- a pool sitting on the ground
-- a container-like pool
+Never show:
+- an above-ground pool
+- exposed fiberglass walls
 - a floating pool
-- large gaps around the pool
-- an elevated pool
-- an above-ground swimming pool
+- a pool sitting like a container
+- large gaps between the pool and ground
 
-The pool shell must disappear naturally below ground.
+The pool must look permanently installed and physically believable.
 
-The final installation must look permanent and physically realistic.
+==================================================
+ORIGINAL PROPERTY
+==================================================
 
-============================================================
-ORIGINAL PROPERTY — PRESERVE
-============================================================
+Preserve the original photograph.
 
-Keep the original customer photograph unchanged except for the pool installation and its selected immediate surround.
-
-Preserve:
+Do NOT change:
 - house
-- villa
 - buildings
 - windows
 - doors
-- balconies
-- walls
 - fences
+- walls
 - trees
-- hedges
 - plants
-- garden structures
+- hedges
 - existing landscaping
-- camera position
 - camera angle
 - perspective
 
-Do NOT redesign the property.
+Only modify the necessary ground area where the pool is installed.
 
-Do NOT generate a different garden.
+Place the pool naturally in the most suitable open garden area.
 
-Do NOT move the house.
+Keep the pool proportional to the house and garden.
 
-Do NOT remove trees unnecessarily.
+==================================================
+WATER
+==================================================
 
-Do NOT change the architecture.
+Use realistic clean blue pool water.
 
-============================================================
-POOL WATER
-============================================================
+The water must have:
+- realistic depth
+- natural reflections
+- subtle sunlight
+- realistic underwater light patterns
+- natural color variation
 
-The pool must contain realistic clean swimming-pool water.
+Do not make the water look flat or artificial.
 
-Water should have:
-- realistic blue color
-- natural depth
-- realistic reflections
-- realistic sunlight
-- subtle underwater light patterns
-- realistic transparency
-- natural water surface variation
-
-The water must look physically present inside the fiberglass pool.
-
-Do NOT make the water look like a flat blue graphic.
-
-============================================================
-CERAMIC SURROUND
-============================================================
+==================================================
+POOL SURROUND
+==================================================
 
 ${
   ceramicColor
     ? `
-CERAMIC IS SELECTED.
+CERAMIC SURROUND (MANDATORY):
 
-CERAMIC COLOR:
-${ceramicColorText}
+Add a ceramic tile surround around the pool.
 
-This exact selected ceramic color MUST be used.
-
-The ceramic color is an independent material choice and MUST NOT change the pool model.
-
-CERAMIC REQUIREMENTS:
-
-- Add ceramic tiles around ALL 4 sides of the pool.
-- Exactly 2 rows of tiles.
-- Total surround width: 120 cm.
-- Each tile: 33 cm wide x 66 cm long.
-- Tile proportions MUST remain 2:1.
-- Tiles MUST be rectangular.
-- DO NOT use square tiles.
-- Long side of each tile runs parallel to the nearest pool edge.
-- Straight organized tile rows.
-- Realistic 2-3 mm grout lines.
-- Tiles sit flush with ground level.
-- Professional outdoor ceramic installation.
-- Realistic ceramic texture.
-- Realistic shadows and reflections.
-
-EXACT COLOR RULE:
-
-The selected ceramic color is:
-${ceramicColorText}
-
-Use this exact color.
-
-Do NOT replace the selected color with:
-- white
-- off-white
-- cream
-- beige
-- light gray
-- generic gray
-- another blue
-- another color
-
-If the selected ceramic is blue, the final ceramic must visibly remain blue.
-
-If the selected ceramic is dark, it must remain dark.
-
-If the selected ceramic is light, it must remain the selected light color.
-
-The ceramic must NOT inherit the color of the pool water.
-
-The ceramic must NOT become white because of sunlight.
-
-The ceramic must NOT be confused with the pool coping.
-
-IMPORTANT:
-
-Adding ceramic tiles must NOT change the shape, proportions or silhouette of the selected ${modelName} pool.
-
-The pool shape is locked independently from the ceramic surround.
-
-Do NOT reshape the pool to follow the ceramic.
-
-Do NOT turn the pool into an oval because ceramic is selected.
-
-Do NOT turn the pool into a rectangular pool because ceramic is selected.
-
-Do NOT add a white border between the pool and ceramic unless it is physically part of the selected pool reference.
-
-Do NOT add a wood deck when ceramic is selected.
-`
-    : `
-NO CERAMIC IS SELECTED.
-
-Do NOT add ceramic tiles.
-
-Do NOT invent a ceramic surround.
-`
-}
-
-============================================================
-COMPOSITE WOOD DECK
-============================================================
-
-${
-  deckColor
-    ? `
-COMPOSITE WOOD DECK IS SELECTED.
-
-DECK COLOR:
-${deckColorText}
-
-This exact selected deck color MUST be used.
-
-The deck is an independent material choice and MUST NOT change the pool model.
-
-DECK REQUIREMENTS:
-
-- Add composite wood deck around ALL 4 sides of the pool.
-- Exactly 3 deck boards on each side.
-- Total deck width: approximately 60 cm.
-- Each board approximately 20 cm wide.
-- Boards run parallel to the nearest pool edge.
-- Tight realistic gaps between boards.
-- Deck sits flush with ground level.
-- Realistic composite wood texture.
+- Total width: 120 cm.
+- Exactly 2 rows.
+- Tile size: 33 x 66 cm.
+- Rectangular 2:1 proportions.
+- Long side parallel to the pool edge.
+- Visible realistic grout lines.
+- Tile color: ${ceramicColor.name}.
+- Tiles flush with ground level.
 - Professional outdoor installation.
 
-EXACT COLOR RULE:
+Do NOT use square tiles.
+Do NOT add a wood deck.
+Do NOT add any white border, coping, or rim around the pool.
+Do NOT skip the ceramic tiles — they are MANDATORY when selected.
+`
+    : deckColor
+    ? `
+COMPOSITE WOOD DECK (MANDATORY):
 
-The selected deck color is:
-${deckColorText}
+Add a composite wood deck around the pool.
 
-Use this exact selected deck color.
+- Total width: approximately 60 cm.
+- Exactly 3 boards.
+- Each board approximately 20 cm wide.
+- Boards parallel to the nearest pool edge.
+- Deck color: ${deckColor.name}.
+- Flush with ground level.
+- Realistic material texture and gaps.
 
-Do NOT replace it with:
-- gray
-- white
-- beige
-- generic brown
-- another wood color
-- another material color
-
-The deck must visibly preserve the selected color.
-
-IMPORTANT:
-
-Adding the deck must NOT change the shape, proportions or silhouette of the selected ${modelName} pool.
-
-The pool geometry is locked independently from the deck.
-
-Do NOT reshape the pool to fit the deck.
-
-Do NOT turn the pool into an oval or rectangle because deck is selected.
-
-Do NOT add ceramic tiles when deck is selected.
+Do NOT add ceramic tiles.
+Do NOT add any white border, coping, or rim around the pool.
+Do NOT skip the deck — it is MANDATORY when selected.
 `
     : `
-NO COMPOSITE WOOD DECK IS SELECTED.
+NO SURROUND MATERIAL:
 
-Do NOT add a wood deck.
+Do not add ceramic tiles, wood deck, paving stones or decorative borders.
+
+The existing ground should naturally meet the pool edge.
+Do NOT add any white border, coping, or rim around the pool.
 `
 }
 
-============================================================
-CERAMIC / DECK MUTUAL EXCLUSION
-============================================================
-
-Only the selected surround material may be used.
-
-If CERAMIC is selected:
-→ ceramic only.
-
-If DECK is selected:
-→ composite wood deck only.
-
-If neither is selected:
-→ no artificial surround material.
-
-NEVER combine ceramic and deck unless explicitly requested.
-
-============================================================
-BUILT-IN ENTRY STEPS
-============================================================
+==================================================
+ENTRY STEPS
+==================================================
 
 ${
   config.hasStairs
     ? `
-BUILT-IN ENTRY STEPS ARE REQUIRED.
+Add wide BUILT-IN FIBERGLASS ENTRY STEPS.
 
-Add the selected pool's built-in fiberglass entry steps.
+- Located on one short end of the pool.
+- 2-3 visible descending levels.
+- Wide and proportional to the pool.
+- Integrated directly into the fiberglass shell.
+- Clearly visible underwater.
+- Match the reference model.
 
-The steps must follow the actual design of the ${modelName} reference.
-
-Requirements:
-- integrated directly into the fiberglass pool shell
-- realistic underwater appearance
-- clearly visible
-- 2-3 descending levels where applicable
-- correct proportions
-- realistic shadows and water distortion
-
-STAIR TYPE:
-${config.stairType}
-
-If the selected model reference shows wide steps:
-→ preserve the wide integrated step design.
-
-If the selected model reference shows corner steps:
-→ preserve the corner step design.
-
-For models such as RELAX, the model-specific built-in steps shown in the reference must remain clearly visible.
-
-Do NOT replace built-in fiberglass steps with a metal ladder.
-
-Do NOT add a separate stainless-steel ladder.
-
-Do NOT remove the model's characteristic steps.
+IMPORTANT:
+Do NOT add a stainless-steel ladder.
+Do NOT add an external staircase.
 `
     : `
-Do NOT add a separate pool ladder.
-
-Do NOT invent additional entry stairs.
-
-If the selected model reference itself contains permanent integrated steps, preserve those model-specific steps.
+Do not add additional pool stairs or a pool ladder.
 `
 }
 
-============================================================
+==================================================
 WATERFALL
-============================================================
+==================================================
 
 ${
   config.hasWaterfall
     ? `
-WATERFALL IS REQUIRED.
+Add one small stainless-steel waterfall blade.
 
-Add one small elegant stainless-steel waterfall blade.
+- Approximately 35 cm wide.
+- Approximately 40 cm tall.
+- Brushed/polished stainless steel.
+- Mounted directly on one long pool edge.
+- Smooth sheet of water flowing into the pool.
+- Realistic connection, reflections and shadows.
 
-- approximately 35 cm wide
-- approximately 40 cm tall
-- brushed/polished stainless steel
-- mounted directly at the pool edge
-- positioned naturally on one long side
-- smooth sheet of water flowing into the pool
-- realistic water flow
-- realistic reflections
-- realistic shadows
-
-The waterfall must look physically connected to the pool.
-
-The waterfall must NOT change the pool's original shape.
+Do not create a large decorative waterfall structure.
 `
     : `
-No waterfall is selected.
-
-Do NOT add a waterfall or decorative water feature.
+Do not add a waterfall or other water feature.
 `
 }
 
-============================================================
-FINAL PHOTOREALISM
-============================================================
+==================================================
+PHOTOREALISM
+==================================================
 
-The final result must look like a REAL PROFESSIONAL PHOTOGRAPH.
+The final result must look like a real professional photograph.
 
-Match the original garden photograph's:
+Match the original image's:
 - camera angle
 - perspective
 - lighting
-- sunlight direction
 - shadows
 - weather
 - time of day
 - image quality
 
-The newly installed pool must have:
-- realistic contact shadows
-- realistic reflections
-- realistic water
-- realistic depth
-- realistic material texture
-- realistic ground integration
+The pool must have realistic:
+- shadows
+- reflections
+- depth
+- material texture
+- contact with the ground
 
-The pool must look physically present in the garden.
+The pool must look physically present in the original garden.
 
-It must NOT look pasted onto the image.
-
-It must NOT look like:
+Do NOT make it look like:
 - CGI
 - 3D render
 - illustration
 - cartoon
 - game graphics
-- artificial concept art
 
-============================================================
-FINAL PRIORITY ORDER
-============================================================
+==================================================
+ABSOLUTE RULES
+==================================================
 
-Follow these priorities in this exact order:
+1. Preserve the original property.
+2. Match Image 2 pool shape.
+3. Keep the stadium/pill silhouette.
+4. Keep the pool symmetrical.
+5. Install the pool underground.
+6. Do not expose fiberglass walls.
+7. Apply the selected deck or ceramic surround.
+8. Use integrated fiberglass steps when selected.
+9. Do not add a metal ladder.
+10. Add the waterfall only when selected.
+11. Do not change the camera perspective.
+12. Produce a photorealistic photograph.
+13. Never add a white border, coping, or rim around the pool.
 
-1. Preserve the original customer garden.
-2. Preserve the EXACT selected pool model from Image 2.
-3. Preserve the model's exact geometry and proportions.
-4. Place the pool in the most suitable available garden area.
-5. Install the pool realistically underground.
-6. Preserve all model-specific built-in steps.
-7. Apply the EXACT selected ceramic OR deck color and geometry.
-8. Add waterfall only if selected.
-9. Match the original camera, lighting and perspective.
-10. Produce a photorealistic final photograph.
-
-MOST IMPORTANT:
-
-CERAMIC OR DECK MUST NEVER CHANGE THE POOL MODEL.
-
-The ${modelName} pool must still look like the exact ${modelName} reference even after ceramic, deck, stairs or waterfall are added.
-
-Do NOT simplify the model into a generic oval.
-
-Do NOT convert the model into a generic stadium pool.
-
-Do NOT change the pool shape because of the surround material.
-
-The selected model identity is LOCKED.
+The pool shape and reference image have the highest priority.
 `.trim();
 }
