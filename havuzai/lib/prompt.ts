@@ -27,20 +27,6 @@ export function buildPoolPrompt(config: PoolConfig, clientConfig: ClientConfig):
     ? "OVAL/TEARDROP shaped — asymmetric, curved sides, one wide rounded end, one narrow tapered end. ABSOLUTELY NOT rectangular."
     : "strictly rectangular — straight sides, 90-degree corners. ABSOLUTELY NOT oval or curved.";
 
-  // Seramik/deck kuşağının havuz etrafında nasıl döşendiğini,
-  // havuzun gerçek formuna (oval vs dikdörtgen) göre tarif ediyoruz.
-  const perimeterPhrase = isRoma
-    ? "around the ENTIRE CURVED PERIMETER of the pool, tightly following its oval/teardrop outline — there are NO straight sides or corners to follow"
-    : "around ALL 4 STRAIGHT SIDES of the pool";
-
-  const tileLayoutPhrase = isRoma
-    ? "Tiles are cut/fitted individually to hug the curved oval edge — the tile band follows the pool's curve continuously, with NO straight or angular segments. The tile band itself curves; it does NOT turn the pool into a rectangular or angular shape."
-    : "Tiles laid in straight rows, with the LONG side (66cm) running parallel to the pool edge";
-
-  const deckLayoutPhrase = isRoma
-    ? "Deck boards are cut/fitted individually to hug the curved oval edge — the deck band follows the pool's curve continuously, with NO straight or angular segments. The deck band itself curves; it does NOT turn the pool into a rectangular or angular shape."
-    : "Each board is 20cm wide, laid parallel to the nearest pool edge";
-
   return `
 You are a professional architectural visualization AI. Your task is to place a luxury fiberglass swimming pool into the provided outdoor photo. The result must look exactly like a real photograph taken after the pool was professionally built and installed.
 
@@ -100,12 +86,14 @@ The pool interior goes visibly deep into the ground.
 
 ${ceramicColor ? `
 RULE 4 — CERAMIC TILE SURROUND (MANDATORY)
-Add a ceramic tile walkway ${perimeterPhrase}.
-- Exactly 2 rows of ceramic tiles, total width 120cm (60cm per row)
+Add a ceramic tile walkway around ALL 4 sides of the pool.
+- Exactly 2 rows of ceramic tiles on each side — total width 120cm (60cm per row)
 - Tile size: RECTANGULAR — width 33cm, length 66cm (2:1 ratio, twice as long as wide)
 - DO NOT use square tiles. Tiles MUST be rectangular with 2:1 ratio.
+- Tile size: RECTANGULAR tiles, 33cm wide x 66cm long — NOT square, NOT 60x60
 - Each tile is TWICE as long as it is wide — like a brick shape
-- ${tileLayoutPhrase}
+- Tiles laid in straight rows, with the LONG side (66cm) running parallel to the pool edge
+- Visible grout lines between all tiles
 - Visible grout lines between all tiles (2-3mm wide)
 - Tile color: ${ceramicColor.name} colored ceramic tiles
 - Tiles sit flush at ground level — NOT raised
@@ -113,19 +101,17 @@ Add a ceramic tile walkway ${perimeterPhrase}.
 - The ceramic surround replaces the grass directly around the pool
 - DO NOT add any white border, coping, or rim around the pool.
 DO NOT skip the ceramic tiles — they are MANDATORY when selected.
-CRITICAL — SHAPE LOCK: Adding this tile surround must NOT change the pool's underlying shape. The pool water outline itself remains: ${shapeRule}
 ` : deckColor ? `
 RULE 4 — DECK SURROUND (MANDATORY)
-Add a composite wood deck ${perimeterPhrase}.
+Add a composite wood deck around ALL 4 sides of the pool.
 - DO NOT add any white border, coping, or rim around the pool.
-- Exactly 3 deck boards, total width 60cm
-- ${deckLayoutPhrase}
+- Exactly 3 deck boards on each side — total width 60cm
+- Each board is 20cm wide, laid parallel to the nearest pool edge
 - Deck color: ${deckColor.name} colored composite wood deck
 - Deck sits flush at ground level — NOT raised
 - Clean modern finish with tight gaps between boards
 - The deck surround replaces the grass directly around the pool
 DO NOT skip the deck — it is MANDATORY when selected.
-CRITICAL — SHAPE LOCK: Adding this deck surround must NOT change the pool's underlying shape. The pool water outline itself remains: ${shapeRule}
 ` : `
 RULE 4 — POOL SURROUND
 The existing ground (grass, soil, or whatever is in the original photo) meets the pool edge directly.
@@ -172,7 +158,7 @@ RULE 7 — PHOTOREALISTIC QUALITY
 ABSOLUTE PROHIBITIONS:
 ❌ Pool above ground level in any way
 ❌ Pool walls or sides visible above the surrounding surface
-❌ Wrong pool shape — must match Image 2 exactly${isRoma ? " (OVAL/TEARDROP — NEVER rectangular, even with tile/deck surround added)" : ""}
+❌ Wrong pool shape — must match Image 2 exactly
 ❌ Changing existing buildings, trees, or landscaping
 ❌ Cartoon, render, 3D, or illustration style — PHOTO ONLY
 ${ceramicColor ? "❌ Missing ceramic tile surround — MANDATORY when selected" : ""}
