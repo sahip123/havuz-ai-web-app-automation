@@ -85,43 +85,26 @@ The pool interior goes visibly deep into the ground.
 ---
 
 ${ceramicColor ? `
-RULE 4 — CERAMIC TILE SURROUND (MANDATORY)
-Add a ceramic tile walkway around ALL 4 sides of the pool.
-- Exactly 2 rows of ceramic tiles on each side — total width 120cm (60cm per row)
-- Tile size: RECTANGULAR — width 33cm, length 66cm (2:1 ratio, twice as long as wide)
-- DO NOT use square tiles. Tiles MUST be rectangular with 2:1 ratio.
-- Tile size: RECTANGULAR tiles, 33cm wide x 66cm long — NOT square, NOT 60x60
-- Each tile is TWICE as long as it is wide — like a brick shape
-- Tiles laid in straight rows, with the LONG side (66cm) running parallel to the pool edge
-- Visible grout lines between all tiles
-- Visible grout lines between all tiles (2-3mm wide)
-- Tile color: ${ceramicColor.name} colored ceramic tiles
-- Tiles sit flush at ground level — NOT raised
-- Clean, professional, realistic tile finish
-- The ceramic surround replaces the grass directly around the pool
-- DO NOT add any white border, coping, or rim around the pool.
-DO NOT skip the ceramic tiles — they are MANDATORY when selected.
+SURROUND:
+First create the EXACT pool shape from Image 2.
+DO NOT change, resize, simplify or redraw the pool shape.
+
+Then add exactly 2 rows of ${ceramicColor.name} rectangular 33x66cm ceramic tiles OUTSIDE the existing pool edge.
+The tiles must follow and wrap around the exact existing pool silhouette.
+The ceramic surround must adapt to the pool shape — the pool shape must NEVER adapt to the ceramic tiles.
+Tiles sit flush with the ground.
+No white border or raised coping.
 ` : deckColor ? `
-RULE 4 — DECK SURROUND (MANDATORY)
-Add a composite wood deck around ALL 4 sides of the pool.
-- DO NOT add any white border, coping, or rim around the pool.
-- Exactly 3 deck boards on each side — total width 60cm
-- Each board is 20cm wide, laid parallel to the nearest pool edge
-- Deck color: ${deckColor.name} colored composite wood deck
-- Deck sits flush at ground level — NOT raised
-- Clean modern finish with tight gaps between boards
-- The deck surround replaces the grass directly around the pool
-DO NOT skip the deck — it is MANDATORY when selected.
-` : `
-RULE 4 — POOL SURROUND
-The existing ground (grass, soil, or whatever is in the original photo) meets the pool edge directly.
-DO NOT add any deck, ceramic tiles, stone, pavers, or any surround material.
-DO NOT add any walkway or border around the pool.
-The original ground material continues right up to the pool water edge.
-DO NOT add any white border, coping, or rim around the pool.
-The pool shell must be completely hidden below ground — NO visible pool walls or sides outside.
-Only the water surface and thin rim are visible — everything else is underground.
-`}
+SURROUND:
+First create the EXACT pool shape from Image 2.
+DO NOT change, resize, simplify or redraw the pool shape.
+
+Then add exactly 3 rows of ${deckColor.name} composite deck boards OUTSIDE the existing pool edge.
+The deck must follow and wrap around the exact existing pool silhouette.
+The deck surround must adapt to the pool shape — the pool shape must NEVER adapt to the deck.
+Deck sits flush with the ground.
+No white border or raised coping.
+` : ``}
 
 ---
 
@@ -154,6 +137,14 @@ RULE 7 — PHOTOREALISTIC QUALITY
 - Luxury villa quality — professional, clean, premium finish
 
 ---
+PRIORITY ORDER:
+1. Preserve the original garden
+2. Create the exact pool shape from Image 2
+3. Keep that pool shape LOCKED
+4. Add ceramic or deck around the locked pool shape
+
+The surround must follow the pool.
+The pool must never change to fit the surround.
 
 ABSOLUTE PROHIBITIONS:
 ❌ Pool above ground level in any way
@@ -166,4 +157,5 @@ ${deckColor ? "❌ Missing deck surround — MANDATORY when selected" : ""}
 ${config.hasStairs ? "❌ Missing pool ladder — MANDATORY when selected" : ""}
 ${config.hasWaterfall ? "❌ Missing waterfall — MANDATORY when selected" : ""}
   `.trim();
+  
 }
