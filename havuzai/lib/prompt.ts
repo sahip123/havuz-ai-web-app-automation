@@ -56,8 +56,10 @@ For this stadium-shaped model:
 
 - Two long straight parallel sides.
 - Two short rounded ends.
+- BOTH short ends must be rounded — this is a SYMMETRIC shape, a mirror image of itself end to end.
+- Do NOT make one end rounded and the other end straight, square, or rectangular. If one end is a semicircle, the OTHER end must ALSO be an identical semicircle of the same radius.
 - Smooth continuous transition from the straight sides into the rounded ends.
-- Symmetrical stadium / pill-shaped silhouette.
+- Symmetrical stadium / pill-shaped silhouette — the same shape whether viewed from either short end.
 - One continuous seamless fiberglass shell.
 - No sharp corners.
 - No rectangular corners.
@@ -66,6 +68,7 @@ For this stadium-shaped model:
 - No bulges.
 - No extra protrusions.
 - No asymmetrical extensions.
+- Entry steps (if present) are a separate feature INSIDE the pool — they do NOT change the outer shell's outline. The outer edge stays a perfect symmetric stadium shape even at the end where steps are located.
 
 Do not redesign or reinterpret the pool shape.
 
@@ -207,6 +210,7 @@ Add wide BUILT-IN FIBERGLASS ENTRY STEPS.
 - Integrated directly into the fiberglass shell.
 - Clearly visible underwater.
 - Match the reference model.
+- IMPORTANT: the steps sit INSIDE the pool's water area — the outer shell outline at that end remains a rounded semicircle, identical to the other end. The steps do NOT flatten, square off, or otherwise change the outer edge shape.
 
 IMPORTANT:
 Do NOT add a stainless-steel ladder.
@@ -277,12 +281,12 @@ ABSOLUTE RULES
 
 1. Preserve the original property.
 2. Match Image 2 pool shape.
-3. Keep the stadium/pill silhouette.
-4. Keep the pool symmetrical.
+3. Keep the stadium/pill silhouette — BOTH ends rounded, symmetric.
+4. Keep the pool symmetrical — never one rounded end and one square end.
 5. Install the pool underground.
 6. Do not expose fiberglass walls.
 7. Apply the selected deck or ceramic surround.
-8. Use integrated fiberglass steps when selected.
+8. Use integrated fiberglass steps when selected, without altering the outer shell shape.
 9. Do not add a metal ladder.
 10. Add the waterfall only when selected.
 11. Do not change the camera perspective.
