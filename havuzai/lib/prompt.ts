@@ -102,6 +102,19 @@ Adding this ceramic surround does NOT change the pool's shape in any way. The po
 
 DO NOT skip the ceramic tiles — they are MANDATORY when selected.
 ` : deckColor ? `
+CRITICAL — POOL SHAPE PRESERVATION:
+The selected pool model's EXACT shape from RULE 2 and Image 2 ALWAYS takes priority.
+
+The ceramic surround must follow the EXACT silhouette of the selected pool at a constant 120cm offset.
+
+- ROMA stays exactly ROMA — preserve its true asymmetric/oval/teardrop outline
+- RELAX stays exactly RELAX — preserve its true reference shape
+- NEVER mix, merge, transform, or blend ROMA and RELAX shapes
+- Rectangular tiles MUST NOT make a curved/asymmetric pool rectangular
+- For curved or irregular shapes, cut tiles at the outer edges as needed
+- IMAGE 2 is the ABSOLUTE authority for the pool's shape
+
+The ceramic tiles only follow the pool shape — they NEVER change the pool shape.
   ...
 RULE 4 — DECK SURROUND (MANDATORY)
 Add a composite wood deck around ALL 4 sides of the pool.
