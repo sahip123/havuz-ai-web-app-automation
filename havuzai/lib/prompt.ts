@@ -88,57 +88,31 @@ ${ceramicColor ? `
 RULE 4 — CERAMIC TILE SURROUND (MANDATORY)
 Add a ceramic tile walkway around ALL 4 sides of the pool.
 - Exactly 2 rows of ceramic tiles on each side — total width 120cm (60cm per row)
-- Tile size: RECTANGULAR — 33cm wide x 66cm long (2:1 ratio, twice as long as wide). NOT square, NOT 60x60.
-- Lay tiles in a RUNNING-BOND brick pattern with staggered joints, LONG side (66cm) parallel to the pool edge — this pattern is impossible with square tiles, so it enforces the correct proportions.
+- Tile size: RECTANGULAR — width 33cm, length 66cm (2:1 ratio, twice as long as wide)
+- DO NOT use square tiles. Tiles MUST be rectangular with 2:1 ratio.
+- Tile size: RECTANGULAR tiles, 33cm wide x 66cm long — NOT square, NOT 60x60
+- Each tile is TWICE as long as it is wide — like a brick shape
+- Tiles laid in straight rows, with the LONG side (66cm) running parallel to the pool edge
+- Visible grout lines between all tiles
 - Visible grout lines between all tiles (2-3mm wide)
 - Tile color: ${ceramicColor.name} colored ceramic tiles
-- Tiles sit flush at ground level — SUNK INTO the lawn like a real patio, zero elevation, no visible tile thickness, no raised platform edge, no shadow gap where tiles meet grass
+- Tiles sit flush at ground level — NOT raised
 - Clean, professional, realistic tile finish
-- The ceramic surround replaces the grass directly around the pool, and grass resumes immediately past the tiled strip
-- DO NOT add any white border, coping, or rim around the pool — tiles meet the water directly.
-
-CRITICAL — SHAPE IS NOT AFFECTED BY THIS RULE:
-Adding this ceramic surround does NOT change the pool's shape in any way. The pool keeps the EXACT silhouette described in RULE 2 above and shown in Image 2 — for the ${modelName} model, that means preserving its true outline exactly as described there (including any asymmetry, if the ${modelName} model has an asymmetric shape). The ceramic tiles simply trace that same outline at a constant 120cm offset — they do not straighten, round, or otherwise reshape the pool's edge.
-
+- The ceramic surround replaces the grass directly around the pool
+- DO NOT add any white border, coping, or rim around the pool.
 DO NOT skip the ceramic tiles — they are MANDATORY when selected.
 ` : deckColor ? `
-CRITICAL — POOL SHAPE PRESERVATION:
-The selected pool model's EXACT shape from RULE 2 and Image 2 ALWAYS takes priority.
-
-The ceramic surround must follow the EXACT silhouette of the selected pool at a constant 120cm offset.
-
-- ROMA stays exactly ROMA — preserve its true asymmetric/oval/teardrop outline
-- RELAX stays exactly RELAX — preserve its true reference shape
-- NEVER mix, merge, transform, or blend ROMA and RELAX shapes
-- Rectangular tiles MUST NOT make a curved/asymmetric pool rectangular
-- For curved or irregular shapes, cut tiles at the outer edges as needed
-- IMAGE 2 is the ABSOLUTE authority for the pool's shape
-
-The ceramic tiles only follow the pool shape — they NEVER change the pool shape.
-  ...
-RULE 4 — DECK SURROUND (MANDATORY) 
-Add a composite wood deck around ALL 4 sides of the pool. 
-- DO NOT add any white border, coping, or rim around the pool. 
-- Exactly 3 deck boards on each side — total width 60cm 
-- Each board is 20cm wide, laid parallel to the nearest pool edge 
-- Deck color: ${deckColor.name} colored composite wood deck 
-- Deck sits flush at ground level — NOT raised 
-- Clean modern finish with tight gaps between boards 
-- The deck surround replaces the grass directly around the pool 
-
-CRITICAL — POOL SHAPE PRESERVATION:
-The selected pool model's EXACT shape from RULE 2 and Image 2 ALWAYS takes priority.
-The deck surround must follow the EXACT silhouette of the selected pool at a constant 60cm offset.
-- ROMA stays exactly ROMA — preserve its true asymmetric/oval/teardrop outline
-- RELAX stays exactly RELAX — preserve its true reference shape
-- NEVER mix, merge, transform, or blend ROMA and RELAX shapes
-- Straight deck boards MUST NOT make a curved/asymmetric pool rectangular
-- For curved or irregular shapes, cut deck boards at the outer edges as needed
-- IMAGE 2 is the ABSOLUTE authority for the pool's shape
-
-The deck only follows the pool shape — it NEVER changes the pool shape.
-
+RULE 4 — DECK SURROUND (MANDATORY)
+Add a composite wood deck around ALL 4 sides of the pool.
+- DO NOT add any white border, coping, or rim around the pool.
+- Exactly 3 deck boards on each side — total width 60cm
+- Each board is 20cm wide, laid parallel to the nearest pool edge
+- Deck color: ${deckColor.name} colored composite wood deck
+- Deck sits flush at ground level — NOT raised
+- Clean modern finish with tight gaps between boards
+- The deck surround replaces the grass directly around the pool
 DO NOT skip the deck — it is MANDATORY when selected.
+` : `
 RULE 4 — POOL SURROUND
 The existing ground (grass, soil, or whatever is in the original photo) meets the pool edge directly.
 DO NOT add any deck, ceramic tiles, stone, pavers, or any surround material.
@@ -147,7 +121,7 @@ The original ground material continues right up to the pool water edge.
 DO NOT add any white border, coping, or rim around the pool.
 The pool shell must be completely hidden below ground — NO visible pool walls or sides outside.
 Only the water surface and thin rim are visible — everything else is underground.
-`:""}
+`}
 
 ---
 
