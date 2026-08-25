@@ -116,17 +116,29 @@ The ceramic surround must follow the EXACT silhouette of the selected pool at a 
 
 The ceramic tiles only follow the pool shape — they NEVER change the pool shape.
   ...
-RULE 4 — DECK SURROUND (MANDATORY)
-Add a composite wood deck around ALL 4 sides of the pool.
-- DO NOT add any white border, coping, or rim around the pool.
-- Exactly 3 deck boards on each side — total width 60cm
-- Each board is 20cm wide, laid parallel to the nearest pool edge
-- Deck color: ${deckColor.name} colored composite wood deck
-- Deck sits flush at ground level — NOT raised
-- Clean modern finish with tight gaps between boards
-- The deck surround replaces the grass directly around the pool
+RULE 4 — DECK SURROUND (MANDATORY) 
+Add a composite wood deck around ALL 4 sides of the pool. 
+- DO NOT add any white border, coping, or rim around the pool. 
+- Exactly 3 deck boards on each side — total width 60cm 
+- Each board is 20cm wide, laid parallel to the nearest pool edge 
+- Deck color: ${deckColor.name} colored composite wood deck 
+- Deck sits flush at ground level — NOT raised 
+- Clean modern finish with tight gaps between boards 
+- The deck surround replaces the grass directly around the pool 
+
+CRITICAL — POOL SHAPE PRESERVATION:
+The selected pool model's EXACT shape from RULE 2 and Image 2 ALWAYS takes priority.
+The deck surround must follow the EXACT silhouette of the selected pool at a constant 60cm offset.
+- ROMA stays exactly ROMA — preserve its true asymmetric/oval/teardrop outline
+- RELAX stays exactly RELAX — preserve its true reference shape
+- NEVER mix, merge, transform, or blend ROMA and RELAX shapes
+- Straight deck boards MUST NOT make a curved/asymmetric pool rectangular
+- For curved or irregular shapes, cut deck boards at the outer edges as needed
+- IMAGE 2 is the ABSOLUTE authority for the pool's shape
+
+The deck only follows the pool shape — it NEVER changes the pool shape.
+
 DO NOT skip the deck — it is MANDATORY when selected.
-` : `
 RULE 4 — POOL SURROUND
 The existing ground (grass, soil, or whatever is in the original photo) meets the pool edge directly.
 DO NOT add any deck, ceramic tiles, stone, pavers, or any surround material.
@@ -135,7 +147,7 @@ The original ground material continues right up to the pool water edge.
 DO NOT add any white border, coping, or rim around the pool.
 The pool shell must be completely hidden below ground — NO visible pool walls or sides outside.
 Only the water surface and thin rim are visible — everything else is underground.
-`}
+`:""}
 
 ---
 
