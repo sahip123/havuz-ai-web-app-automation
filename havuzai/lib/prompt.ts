@@ -88,20 +88,21 @@ ${ceramicColor ? `
 RULE 4 — CERAMIC TILE SURROUND (MANDATORY)
 Add a ceramic tile walkway around ALL 4 sides of the pool.
 - Exactly 2 rows of ceramic tiles on each side — total width 120cm (60cm per row)
-- Tile size: RECTANGULAR — width 33cm, length 66cm (2:1 ratio, twice as long as wide)
-- DO NOT use square tiles. Tiles MUST be rectangular with 2:1 ratio.
-- Tile size: RECTANGULAR tiles, 33cm wide x 66cm long — NOT square, NOT 60x60
-- Each tile is TWICE as long as it is wide — like a brick shape
-- Tiles laid in straight rows, with the LONG side (66cm) running parallel to the pool edge
-- Visible grout lines between all tiles
+- Tile size: RECTANGULAR — 33cm wide x 66cm long (2:1 ratio, twice as long as wide). NOT square, NOT 60x60.
+- Lay tiles in a RUNNING-BOND brick pattern with staggered joints, LONG side (66cm) parallel to the pool edge — this pattern is impossible with square tiles, so it enforces the correct proportions.
 - Visible grout lines between all tiles (2-3mm wide)
 - Tile color: ${ceramicColor.name} colored ceramic tiles
-- Tiles sit flush at ground level — NOT raised
+- Tiles sit flush at ground level — SUNK INTO the lawn like a real patio, zero elevation, no visible tile thickness, no raised platform edge, no shadow gap where tiles meet grass
 - Clean, professional, realistic tile finish
-- The ceramic surround replaces the grass directly around the pool
-- DO NOT add any white border, coping, or rim around the pool.
+- The ceramic surround replaces the grass directly around the pool, and grass resumes immediately past the tiled strip
+- DO NOT add any white border, coping, or rim around the pool — tiles meet the water directly.
+
+CRITICAL — SHAPE IS NOT AFFECTED BY THIS RULE:
+Adding this ceramic surround does NOT change the pool's shape in any way. The pool keeps the EXACT silhouette described in RULE 2 above and shown in Image 2 — for the ${modelName} model, that means preserving its true outline exactly as described there (including any asymmetry, if the ${modelName} model has an asymmetric shape). The ceramic tiles simply trace that same outline at a constant 120cm offset — they do not straighten, round, or otherwise reshape the pool's edge.
+
 DO NOT skip the ceramic tiles — they are MANDATORY when selected.
 ` : deckColor ? `
+  ...
 RULE 4 — DECK SURROUND (MANDATORY)
 Add a composite wood deck around ALL 4 sides of the pool.
 - DO NOT add any white border, coping, or rim around the pool.
