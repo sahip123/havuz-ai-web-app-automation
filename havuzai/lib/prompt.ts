@@ -39,8 +39,8 @@ export function buildPoolPrompt(
       `${model} shaped fiberglass pool`;
 
   const shapeRule = isRoma
-    ? `STRICT ROMA SHAPE: two straight parallel long sides + two equal rounded semicircular ends. The pool is a stadium/capsule shape. Both ends are rounded. No sharp corners anywhere. NEVER make this pool rectangular, square, teardrop, asymmetric, or oval without straight parallel sides.`
-    : isRelax
+  ? "ROMA is ONE fixed pool design. Copy the EXACT silhouette and proportions from Image 2. NEVER make it a generic oval, capsule, ellipse, or symmetrical pool. Image 2 is the absolute shape authority."
+  : "strictly rectangular — straight sides, 90-degree corners. ABSOLUTELY NOT oval or curved." ; isRelax
     ? `STRICT RELAX SHAPE: strictly rectangular with four sharp 90-degree corners and straight parallel sides. NEVER round, curve, oval, stadium-shape, or modify any corner.`
     : `The selected pool model description defines the exact pool geometry. Do not change or reinterpret the pool shape.`;
 
