@@ -23,9 +23,26 @@ export function buildPoolPrompt(config: PoolConfig, clientConfig: ClientConfig):
   const ceramicColor  = ceramic ? clientConfig.ceramic_colors.find((c) => c.id === ceramic) : null;
 
   const isRoma = model.toUpperCase() === "ROMA";
+  const hasSurround = Boolean(ceramicColor || deckColor);
+
   const shapeRule = isRoma
-    ? "OVAL/TEARDROP shaped — asymmetric, curved sides, one wide rounded end, one narrow tapered end. ABSOLUTELY NOT rectangular."
+    ? "Asymmetric, curved shape with a wide rounded end and a narrower shouldered end — matching Image 2 exactly. ABSOLUTELY NOT a symmetric oval, NOT a symmetric pill/stadium shape, NOT rectangular."
     : "strictly rectangular — straight sides, 90-degree corners. ABSOLUTELY NOT oval or curved.";
+
+  // Roma için: fal.ts bahçe fotoğrafına Roma'nın GERÇEK silüetiyle (dikdörtgen
+  // değil) magenta kılavuz çizer. Bu blok sadece isRoma true iken prompt'a girer.
+  const romaGuideNote = isRoma
+    ? `
+
+---
+
+PLACEMENT GUIDE (ROMA ONLY):
+Image 1 contains a solid magenta shape drawn in the EXACT silhouette of the ROMA pool — wide rounded end, narrower shouldered end, matching Image 2's outline precisely. This marks the pool's exact footprint, position, and orientation.
+${hasSurround ? `A larger, fainter version of the same silhouette surrounds it — the ring between the two marks the paving/deck's exact footprint. This ring follows the pool's own curved outline at a constant offset, NOT a straight-sided rectangle.
+Fill the ring between the two shapes with the selected surround material.` : ""}
+Build the pool water exactly filling the solid magenta shape — same position, same size, same orientation as drawn.
+PAINT OVER ALL MAGENTA COMPLETELY. Zero magenta pixels may remain in the final image.`
+    : "";
 
   return `
 You are a professional architectural visualization AI. Your task is to place a luxury fiberglass swimming pool into the provided outdoor photo. The result must look exactly like a real photograph taken after the pool was professionally built and installed.
@@ -74,6 +91,7 @@ The pool must be SMALL relative to the garden — roughly 20-25% of the visible 
 The pool must be clearly SMALLER than the house/building.
 There must be visible grass on ALL sides around the pool — at least 2-3 meters of grass between pool edge and garden boundaries.
 DO NOT fill the garden with the pool.
+${romaGuideNote}
 
 ---
 
@@ -90,10 +108,8 @@ Add a ceramic tile walkway around ALL 4 sides of the pool.
 - Exactly 2 rows of ceramic tiles on each side — total width 120cm (60cm per row)
 - Tile size: RECTANGULAR — width 33cm, length 66cm (2:1 ratio, twice as long as wide)
 - DO NOT use square tiles. Tiles MUST be rectangular with 2:1 ratio.
-- Tile size: RECTANGULAR tiles, 33cm wide x 66cm long — NOT square, NOT 60x60
 - Each tile is TWICE as long as it is wide — like a brick shape
 - Tiles laid in straight rows, with the LONG side (66cm) running parallel to the pool edge
-- Visible grout lines between all tiles
 - Visible grout lines between all tiles (2-3mm wide)
 - Tile color: ${ceramicColor.name} colored ceramic tiles
 - Tiles sit flush at ground level — NOT raised
@@ -157,6 +173,8 @@ ABSOLUTE PROHIBITIONS:
 ❌ Pool above ground level in any way
 ❌ Pool walls or sides visible above the surrounding surface
 ❌ Wrong pool shape — must match Image 2 exactly
+${isRoma ? "❌ Making ROMA a symmetric oval, pill, or stadium shape — it must be asymmetric per Image 2" : ""}
+${isRoma ? "❌ Any magenta guide marking left visible in the final image" : ""}
 ❌ Changing existing buildings, trees, or landscaping
 ❌ Cartoon, render, 3D, or illustration style — PHOTO ONLY
 ${ceramicColor ? "❌ Missing ceramic tile surround — MANDATORY when selected" : ""}
